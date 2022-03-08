@@ -7,7 +7,15 @@ router.get('/', async (req, res) => {
   res.send({data: students})
 })
 
-router.post('/', async (req, res) => {})
+router.post('/', async (req, res) => {
+  let attributes = req.body
+  delete attributes._id
+
+  let newStudent = new Student(attributes)
+  await newStudent.save()
+
+  res.status(201).send({ data: newStudent})
+})
 
 router.get('/:id', async (req, res) => {})
 
