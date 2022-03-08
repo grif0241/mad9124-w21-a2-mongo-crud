@@ -4,7 +4,8 @@
   "description": "MAD9124 Mobile API Development",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "keywords": [
     "MAD9124",
@@ -28,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/grif0241/mad9124-w21-a2-mongo-crud/issues"
   },
-  "homepage": "https://github.com/grif0241/mad9124-w21-a2-mongo-crud#readme"
+  "homepage": "https://github.com/grif0241/mad9124-w21-a2-mongo-crud#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
