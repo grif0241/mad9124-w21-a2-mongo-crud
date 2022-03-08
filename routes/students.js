@@ -29,13 +29,29 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.patch('/:id', async (req, res) => {})
+router.patch('/:id', async (req, res) => {
+  try {
+    const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
+      {
+        new: true,
+        runValidators: true
+      }
+    )
+    if (!student) throw new Error ('Resource not found!')
+    res.send({data: student})
+  } catch (err) {
+    sendResourceNotFound(req, res) // throw not found error if cannot find student
+  }
+})
 
 router.put('/:id', async (req, res) => {})
 
 router.delete('/:id', async (req, res) => {})
 
-
+// resource not found function for requests with specific id 
 function sendResourceNotFound(req, res) {
   res.status(404).send({
     errors: [
