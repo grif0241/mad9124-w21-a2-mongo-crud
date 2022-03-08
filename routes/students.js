@@ -1,7 +1,11 @@
+const Student = require('../models/Student')
 const express = require('express')
 const router = express.Router()
 
-router.get('/', async (req, res) => {})
+router.get('/', async (req, res) => {
+  const students = await Student.find()
+  res.send({data: students})
+})
 
 router.post('/', async (req, res) => {})
 
