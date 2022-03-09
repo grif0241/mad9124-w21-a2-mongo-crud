@@ -1,4 +1,4 @@
-const debug = require('debug')("mad9124-w21-a2-mongo-crud")
+const debug = require('debug')("mad9124-w21-a2-mongo-crud:db")
 const mongoose = require('mongoose')
 
 module.exports = () => {
@@ -10,10 +10,10 @@ module.exports = () => {
       // useUnifiedTopology: true
     })
     .then(() => {
-      console.log(`Connected to MongoDB ...`)
+      debug(`Connected to MongoDB ...`)
     })
     .catch(err => {
-      console.log(`Error connecting to MongoDB ...`, err.message)
+      debug(`Error connecting to MongoDB ...`, err.message)
       process.exit(1)
     })
 }

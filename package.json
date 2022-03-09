@@ -4,8 +4,9 @@
   "description": "MAD9124 Mobile API Development",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "NODE_ENV=production PORT=433 node app.js",
+    "dev": "DEBUG=mad9124-w21-a2-mongo-crud* NODE_ENV=dev PORT=3000 nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "MAD9124",
@@ -21,7 +22,8 @@
     "debug": "^4.3.3",
     "express": "^4.17.3",
     "mongoose": "^6.2.4",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "xss": "^1.0.11"
   },
   "repository": {
     "type": "git",
