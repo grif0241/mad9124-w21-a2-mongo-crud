@@ -1,3 +1,4 @@
+// const sanitizeBody = require('./middleware/sanitizeBody')
 const Student = require('../models/Student')
 const express = require('express')
 const router = express.Router()

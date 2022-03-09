@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "NODE_ENV=production PORT=433 node app.js",
-    "dev": "DEBUG=mad9124-w21-a2-mongo-crud* NODE_ENV=dev PORT=3000 nodemon app.js",
+    "dev": "DEBUG=mad9124-w21-a2-mongo-crud*,sanitize* NODE_ENV=dev PORT=3000 nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -21,6 +21,7 @@
   "dependencies": {
     "debug": "^4.3.3",
     "express": "^4.17.3",
+    "express-mongo-sanitize": "^2.2.0",
     "mongoose": "^6.2.4",
     "morgan": "^1.10.0",
     "xss": "^1.0.11"
