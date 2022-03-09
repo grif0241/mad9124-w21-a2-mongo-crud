@@ -3,12 +3,14 @@ const xss = require('xss')
 
 const sanitize = sourceString => {
   return xss(sourceString, {
-    whiteList: [],
-    stripIgnoreTag: true,
-    stripIgnoreTagBody: ['script']
+    whiteList: [], // filter out all tags
+    stripIgnoreTag: true, // filter html not in whiteList
+    stripIgnoreTagBody: ['script'] // filter out script tag CONTENT
   })
 }
 
+// function from lab notes:
+// recursively going deeper into an Array/Object and repeatedly sanitize tags
 const stripTags = payload => {
   let attributes = { ...payload } // don't mutate the source data
   for (let key in attributes) {

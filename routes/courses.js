@@ -1,14 +1,19 @@
 const Course = require('../models/Course')
 const express = require('express')
-const router = express.Router()
 const sanitizeBody = require('../middleware/sanitizeBody')
+const router = express.Router()
 
+// sanitizeBody on POST method
+router.use('/', sanitizeBody)
+
+
+// routes
 router.get('/', async (req, res) => {
   const courses = await Course.find()
   res.send({data: courses})
 })
 
-router.post('/', sanitizeBody, async (req, res) => {
+router.post('/', async (req, res) => {
   let attributes = req.body
   delete attributes._id
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-// const Course = require('./Course')
 
+// schema model for student
 const studentSchema = new mongoose.Schema({
   firstName: {type: String, maxlength: 64, required: true},
   lastName: {type: String, maxlength: 64, required: true}, 
