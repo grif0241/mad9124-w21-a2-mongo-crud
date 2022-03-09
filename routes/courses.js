@@ -18,9 +18,14 @@ router.post('/', async (req, res) => {
   delete attributes._id
 
   let newCourse = new Course(req.sanitizedBody)
-  await newCourse.save()
+  try {
+    await newCourse.save()
+    res.status(201).send({ data: newCourse})
+  } catch(err) {
+    unableToCreateObject(req, res)
+    // res.send({data: req.sanitizeBody })
+  }
 
-  res.status(201).send({ data: newCourse})
 })
 
 router.get('/:id', async (req, res) => {
@@ -83,13 +88,25 @@ router.delete('/:id', async (req, res) => {
 })
 
 // resource not found function for requests with specific id 
-function sendResourceNotFound(req, res) {
+function sendResourceNotFound(req, res,) {
   res.status(404).send({
     errors: [
       {
         status: '404',
         title: 'Resource does not exist',
         description: `We could not find a course with the id ${req.params.id}`
+      }
+    ]
+  })
+}
+// error for bad post
+function unableToCreateObject(req, res) {
+  res.status(422).send({
+    errors: [
+      {
+        status: '422',
+        title: 'Unprocessable Entity ',
+        description: `The server understands the content type and syntax of the request entity, but still server is unable to process the request for some reason.`
       }
     ]
   })
