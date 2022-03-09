@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const student = await Student.findById(req.params.id)
-    if (!car) {
+    if (!student) {
       throw new Error ('Resource not found')
     }
     res.send({data: student})

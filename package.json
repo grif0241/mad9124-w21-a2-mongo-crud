@@ -11,13 +11,14 @@
     "MAD9124",
     "W21"
   ],
-  "author": "",
+  "author": "Tyler Griffin",
   "contributors": [
     "Robert McKenney <mckennr@algonquincollege.com>"
   ],
   "license": "ISC",
   "private": true,
   "dependencies": {
+    "debug": "^4.3.3",
     "express": "^4.17.3",
     "mongoose": "^6.2.4",
     "morgan": "^1.10.0"
