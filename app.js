@@ -1,3 +1,6 @@
+// package.json sets the ENV development port to 3000 for testing**
+// use npm run dev and POSTMAN on port 3000 for testing
+
 'use strict'
 // dependencies 
 const debug = require('debug')('mad9124-w21-a2-mongo-crud')
@@ -18,8 +21,6 @@ app.use(sanitizeMongo())
 // routes
 app.use('/api/students', require('./routes/students'))
 app.use('/api/courses', require('./routes/courses'))
-
-// package.json sets the development port to 3000 for testing
 
 // port
 const port = process.env.PORT || 3030

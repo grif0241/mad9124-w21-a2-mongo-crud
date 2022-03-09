@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
     res.status(201).send({ data: newCourse})
   } catch(err) {
     unableToCreateObject(req, res)
-    // res.send({data: req.sanitizeBody })
   }
 
 })
