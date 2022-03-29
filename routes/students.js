@@ -61,42 +61,6 @@ const update =
 router.put('/:id', update(true))
 router.patch('/:id', update(false))
 
-// router.patch('/:id', async (req, res) => {
-//   try {
-//     const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
-//     const student = await Student.findByIdAndUpdate(
-//       req.params.id,
-//       { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
-//       {
-//         new: true,
-//         runValidators: true
-//       }
-//     )
-//     if (!student) throw new Error ('Resource not found!')
-//     res.send({data: student})
-//   } catch (err) {
-//     sendResourceNotFound(req, res) // throw not found error if cannot find student
-//   }
-// })
-
-// router.put('/:id', async (req, res) => {
-//   try {
-//     const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
-//     const student = await Student.findByIdAndUpdate(
-//       req.params.id,
-//       { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
-//       {
-//         new: true,
-//         runValidators: true,
-//         overwrite: true
-//       }
-//     )
-//     if (!student) throw new Error ('Resource not found!')
-//     res.send({data: student})
-//   } catch (err) {
-//     sendResourceNotFound(req, res) // throw not found error if cannot find student
-//   }
-// })
 
 router.delete('/:id', async (req, res) => {
   try {
