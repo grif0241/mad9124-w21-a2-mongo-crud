@@ -26,4 +26,5 @@ app.use('/api/courses', require('./routes/courses'))
 const port = process.env.PORT || 3030
 app.listen(port, () => {
   debug(`HTTP server listening on port ${port}...`)
+  console.log(`HTTP server listening on port ${port}...`)
 })

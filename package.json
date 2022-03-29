@@ -4,9 +4,8 @@
   "description": "MAD9124 Mobile API Development",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production PORT=433 node app.js",
-    "dev": "DEBUG=mad9124-w21-a2-mongo-crud*,sanitize* NODE_ENV=dev PORT=3000 nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DEBUG=mad9124*,sanitize* nodemon server.js"
   },
   "keywords": [
     "MAD9124",

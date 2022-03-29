@@ -17,10 +17,10 @@ router.post('/', async (req, res) => {
   let attributes = req.body
   delete attributes._id
 
-  let newCourse = new Course(req.sanitizedBody)
   try {
+    let newCourse = new Course(req.sanitizedBody)
     await newCourse.save()
-    res.status(201).send({ data: newCourse})
+    res.status(201).json(formatResponseData(newCourse))
   } catch(err) {
     unableToCreateObject(req, res)
   }
@@ -33,11 +33,34 @@ router.get('/:id', async (req, res) => {
     if (!course) {
       throw new Error ('Resource not found')
     }
-    res.send({data: course})
+    res.json(formatResponseData(course))
   } catch(err) {
     sendResourceNotFound(req, res)
   }
 })
+
+const update =
+  (overwrite = false) => 
+  async(req, res) => {
+    try {
+      const course = await Course.findByIdAndUpdate(
+        req.params.id,
+        req.sanitizedBody,
+        {
+          new: true,
+          overwrite, 
+          runValidators: true,
+        }
+      )
+      if(!course) throw new Error('Resource not found')
+      res.json(formatResponseData(course))
+    } catch (err){
+      sendResourceNotFound(req, res)
+    }
+  }
+
+router.put('/:id', update(true))
+router.patch('/:id', update(false))
 
 router.patch('/:id', async (req, res) => {
   try {
@@ -80,7 +103,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const course = await Course.findByIdAndRemove(req.params.id)
     if (!course) throw new Error ('Resource not found')
-    res.send({data: course})
+    res.json(formatResponseData(course))
   } catch(err) {
     sendResourceNotFound(req, res)
   }
@@ -109,6 +132,18 @@ function unableToCreateObject(req, res) {
       }
     ]
   })
+}
+
+function formatResponseData(payload, type = 'courses') {
+  if (payload instanceof Array) {
+    return {data: payload.map(resource => format(resource))}
+  } else {
+    return {data: format(payload)}
+  }
+  function format(resource) {
+    const {_id, ... attributes} = resource.toJSON ? resource.toJSON() : resource
+    return {type, id: _id, attributes}
+  }
 }
 
 module.exports = router

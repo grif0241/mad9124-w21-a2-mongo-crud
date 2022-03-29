@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
   try {
     let newStudent = new Student(req.sanitizedBody)
     await newStudent.save()
-    res.status(201).send({ data: newStudent}) 
+    res.status(201).json(formatResponseData(newStudent)) 
   } catch(err) {
     unableToCreateObject(req, res)
   }
@@ -32,54 +32,77 @@ router.get('/:id', async (req, res) => {
     if (!student) {
       throw new Error ('Resource not found')
     }
-    res.send({data: student})
+    res.json(formatResponseData(student))
   } catch(err) {
     sendResourceNotFound(req, res)
   }
 })
 
-router.patch('/:id', async (req, res) => {
-  try {
-    const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
-    const student = await Student.findByIdAndUpdate(
-      req.params.id,
-      { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
-      {
-        new: true,
-        runValidators: true
-      }
-    )
-    if (!student) throw new Error ('Resource not found!')
-    res.send({data: student})
-  } catch (err) {
-    sendResourceNotFound(req, res) // throw not found error if cannot find student
+const update =
+  (overwrite = false) => 
+  async(req, res) => {
+    try {
+      const student = await Student.findByIdAndUpdate(
+        req.params.id,
+        req.sanitizedBody,
+        {
+          new: true,
+          overwrite, 
+          runValidators: true,
+        }
+      )
+      if(!student) throw new Error('Resource not found')
+      res.json(formatResponseData(student))
+    } catch (err){
+      sendResourceNotFound(req, res)
+    }
   }
-})
 
-router.put('/:id', async (req, res) => {
-  try {
-    const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
-    const student = await Student.findByIdAndUpdate(
-      req.params.id,
-      { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
-      {
-        new: true,
-        runValidators: true,
-        overwrite: true
-      }
-    )
-    if (!student) throw new Error ('Resource not found!')
-    res.send({data: student})
-  } catch (err) {
-    sendResourceNotFound(req, res) // throw not found error if cannot find student
-  }
-})
+router.put('/:id', update(true))
+router.patch('/:id', update(false))
+
+// router.patch('/:id', async (req, res) => {
+//   try {
+//     const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
+//     const student = await Student.findByIdAndUpdate(
+//       req.params.id,
+//       { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
+//       {
+//         new: true,
+//         runValidators: true
+//       }
+//     )
+//     if (!student) throw new Error ('Resource not found!')
+//     res.send({data: student})
+//   } catch (err) {
+//     sendResourceNotFound(req, res) // throw not found error if cannot find student
+//   }
+// })
+
+// router.put('/:id', async (req, res) => {
+//   try {
+//     const { _id, ... otherAttributes } = req.body // destructure properties from id; don't trust client id
+//     const student = await Student.findByIdAndUpdate(
+//       req.params.id,
+//       { _id: req.params.id, ...otherAttributes}, // set the id to the proper unique one from req.params.id
+//       {
+//         new: true,
+//         runValidators: true,
+//         overwrite: true
+//       }
+//     )
+//     if (!student) throw new Error ('Resource not found!')
+//     res.send({data: student})
+//   } catch (err) {
+//     sendResourceNotFound(req, res) // throw not found error if cannot find student
+//   }
+// })
 
 router.delete('/:id', async (req, res) => {
   try {
     const student = await Student.findByIdAndRemove(req.params.id)
     if (!student) throw new Error ('Resource not found')
-    res.send({data: student})
+    res.json(formatResponseData(student))
   } catch(err) {
     sendResourceNotFound(req, res)
   }
@@ -108,6 +131,18 @@ function unableToCreateObject(req, res) {
       }
     ]
   })
+}
+
+function formatResponseData(payload, type = 'students') {
+  if (payload instanceof Array) {
+    return {data: payload.map(resource => format(resource))}
+  } else {
+    return {data: format(payload)}
+  }
+  function format(resource) {
+    const {_id, ... attributes} = resource.toJSON ? resource.toJSON() : resource
+    return {type, id: _id, attributes}
+  }
 }
 
 module.exports = router
